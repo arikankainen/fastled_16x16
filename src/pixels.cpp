@@ -11,6 +11,16 @@ void setPixel(uint8_t var[PIXELS_X][PIXELS_Y][COLORS], uint8_t x, uint8_t y, uin
     if (refresh) updateDisplay(var);
 }
 
+void clearPixel(uint8_t var[PIXELS_X][PIXELS_Y][COLORS], uint8_t x, uint8_t y, bool refresh) {
+    if (x < PIXELS_X && y < PIXELS_Y) {
+        var[x][y][R] = 0;
+        var[x][y][G] = 0;
+        var[x][y][B] = 0;
+    }
+
+    if (refresh) updateDisplay(var);
+}
+
 void setPixels(uint8_t var[PIXELS_X][PIXELS_Y][COLORS], uint8_t r, uint8_t g, uint8_t b, bool refresh) {
     for (uint8_t x = 0; x < PIXELS_X; x++) {
         for (uint8_t y = 0; y < PIXELS_Y; y++) {

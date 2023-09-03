@@ -1,12 +1,15 @@
 #include "def.h"
 #include "pixels.h"
+#include "font-big.h"
+#include "font-small.h"
+#include "text.h"
 
 uint8_t matrix[PIXELS_X][PIXELS_Y][COLORS];
 CRGB leds[NUM_LEDS];
 
 void setup() {
     FastLED.addLeds<NEOPIXEL, DATA_PIN>(leds, NUM_LEDS);
-    FastLED.setBrightness(1);
+    FastLED.setBrightness(10);
 
     // setPixel(matrix, 13, 15, 0, 0, 255, false);
     // setPixel(matrix, 14, 15, 0, 255, 0, false);
@@ -14,8 +17,11 @@ void setup() {
 
     // updateDisplay(matrix);
 
-    // setPixels(matrix, 255, 0, 255, true);
-    setRect(matrix, 5, 5, 9, 9, 255, 255, 0, true);
+    // setPixels(matrix, 22, 22, 22, true);
+    // uint8_t hourLength = getTextWidth(fontSmall, "10");
+    // uint8_t minuteLength = getTextWidth(fontSmall, "05");
+    // setText(matrix, fontSmall, "10", int((PIXELS_X - hourLength) / 2), 0, 0, false, true);
+    // setText(matrix, fontSmall, "05", int((PIXELS_X - minuteLength) / 2), 7, 0, false, true);
 }
 
 void loop() {
