@@ -7,5 +7,6 @@ void animRunRightWithFireball();
 void animRunLeftWithFireball();
 void animRunRightInPlaceAndTurnLeft();
 void animRunLeftInPlaceAndTurnRight();
+void animRunRightAndJump();
 
 #endif // DEMO_H

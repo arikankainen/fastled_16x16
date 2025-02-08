@@ -123,3 +123,44 @@ void animRunLeftInPlaceAndTurnRight() {
     setFrame(matrix, frameStand, false, 0, 0, 0, true);
     delay(3000);
 }
+
+void animRunRightAndJump() {
+    uint8_t n = 0;
+    uint8_t h = 0;
+
+    const uint8_t JUMP_FRAMES = 22;
+    const uint8_t JUMP_HEIGHT = 16;
+
+    for (int8_t i = -16; i < 16; i++) {
+        clearPixels(matrix);
+
+        if (i < -6) {
+            switch (n) {
+                case 0:
+                    setFrame(matrix, frameRun1, false, 0, i, 0);
+                    break;
+                case 1:
+                    setFrame(matrix, frameRun2, false, 0, i, 0);
+                    break;
+                case 2:
+                    setFrame(matrix, frameRun3, false, 0, i, 0);
+                    break;
+                case 3:
+                    setFrame(matrix, frameRun2, false, 0, i, 0);
+                    break;
+            }
+        
+            n++;
+            if (n > 3) n = 0;
+        }
+        else {
+            int8_t y = -JUMP_HEIGHT * sin((M_PI / JUMP_FRAMES) * h);
+            setFrame(matrix, frameJump, false, 0, i, y - 1);
+            h++;
+        }
+
+        updateDisplay(matrix);
+        delay(100);
+    }
+
+}
