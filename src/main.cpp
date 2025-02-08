@@ -12,9 +12,23 @@ struct ColorRGB {
     uint8_t r, g, b;
 };
 
-ColorRGB colorRed = { 181, 49, 32 };
-ColorRGB colorGreen = { 107, 109, 0 };
-ColorRGB colorYellow = { 234, 158, 34 };
+/*
+    NOTE! Keep brightness level under 10 so that the LEDs don't draw too much current from Arduino's 5V pin!
+    
+    With brightness level 3, there are only 3 shades available (+ black)
+    0-63: black
+    64-127: darkest
+    128-191: medium
+    192-255: brightest
+*/
+
+
+uint8_t brightness = 3;
+
+ColorRGB colorRed = { 128, 0, 0 };
+ColorRGB colorGreen = { 64, 64, 0 };
+ColorRGB colorYellow = { 192, 128, 0 };
+ColorRGB colorBlue = { 64, 64, 128 };
 ColorRGB colorBlack = { 0, 0, 0 };
 
 ColorRGB getRgbValues(uint8_t color) {
@@ -37,13 +51,17 @@ void mirrorFrame(uint8_t frame[16][16]) {
 }
 
 void drawFrame(uint8_t frame[16][16], bool update, int displayTime = 100) {
-    clearPixels(matrix, false);
+    auto [r, g, b] = colorBlue;
+    setPixels(matrix, r, g, b, false);
 
     for (uint8_t y = 0; y < 16; y++) {
         for (uint8_t x = 0; x < 16; x++) {
             uint8_t item = frame[y][x];
-            auto [r, g, b] = getRgbValues(item);
-            setPixel(matrix, x, y, r, g, b, false);
+            
+            if (item > 0) {
+                auto [r, g, b] = getRgbValues(item);
+                setPixel(matrix, x, y, r, g, b, false);
+            }
         }
     }
 
@@ -52,13 +70,17 @@ void drawFrame(uint8_t frame[16][16], bool update, int displayTime = 100) {
 }
 
 void drawMirroredFrame(uint8_t frame[16][16], bool update, int displayTime = 100) {
-    clearPixels(matrix, false);
+    auto [r, g, b] = colorBlue;
+    setPixels(matrix, r, g, b, false);
 
     for (uint8_t y = 0; y < 16; y++) {
         for (uint8_t x = 0; x < 16; x++) {
             uint8_t item = frame[y][x];
-            auto [r, g, b] = getRgbValues(item);
-            setPixel(matrix, 15 - x, y, r, g, b, false);
+
+            if (item > 0) {
+                auto [r, g, b] = getRgbValues(item);
+                setPixel(matrix, 15 - x, y, r, g, b, false);
+            }
         }
     }
 
@@ -68,14 +90,9 @@ void drawMirroredFrame(uint8_t frame[16][16], bool update, int displayTime = 100
 
 void setup() {
     FastLED.addLeds<NEOPIXEL, DATA_PIN>(leds, NUM_LEDS);
-    FastLED.setBrightness(5);
+    FastLED.setBrightness(brightness);
     Serial.begin(9600);
     setPixels(matrix, 0, 0, 0, true);
-
-    // uint8_t hourLength = getTextWidth(fontSmall, "10");
-    // uint8_t minuteLength = getTextWidth(fontSmall, "05");
-    // setText(matrix, fontSmall, "10", int((PIXELS_X - hourLength) / 2), 0, 0, false, true);
-    // setText(matrix, fontSmall, "05", int((PIXELS_X - minuteLength) / 2), 7, 0, false, true);
 }
 
 void loop() {
