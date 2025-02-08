@@ -1,9 +1,12 @@
 #include <Arduino.h>
 #include <FastLED.h>
 
-#define NUM_LEDS 256
+#define BUTTON1_PIN 3
+#define BUTTON2_PIN 4
+#define BUTTON3_PIN 5
 #define DATA_PIN 6
 
+#define NUM_LEDS 256
 #define PIXELS_X 16
 #define PIXELS_Y 16
 #define COLORS 3
