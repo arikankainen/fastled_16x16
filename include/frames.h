@@ -1,3 +1,6 @@
+#ifndef FRAMES_H
+#define FRAMES_H
+
 #include <Arduino.h>
 
 uint8_t frameStand[16][16] = {
@@ -94,3 +97,5 @@ uint8_t frameTurn[16][16] = {
     { 0, 2, 2, 2, 2, 2, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, },
     { 0, 0, 2, 2, 2, 2, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, },
 };
+
+#endif // FRAMES_H

@@ -1,3 +1,6 @@
+#ifndef DEF_H
+#define DEF_H
+
 #include <Arduino.h>
 #include <FastLED.h>
 
@@ -15,3 +18,7 @@
 #define B 2
 
 extern CRGB leds[NUM_LEDS];
+extern uint8_t matrix[PIXELS_X][PIXELS_Y][COLORS];
+extern uint8_t matrixBuffer[PIXELS_X][PIXELS_Y][COLORS];
+
+#endif // DEF_H

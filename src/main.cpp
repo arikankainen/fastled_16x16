@@ -1,54 +1,10 @@
 #include "def.h"
+#include "colors.h"
 #include "pixels.h"
 #include "font-big.h"
 #include "font-small.h"
 #include "text.h"
 #include "frames.h"
-
-uint8_t matrix[PIXELS_X][PIXELS_Y][COLORS];
-CRGB leds[NUM_LEDS];
-
-struct ColorRGB {
-    uint8_t r, g, b;
-};
-
-/*
-    NOTE! Keep brightness level under 10 so that the LEDs don't draw too much current from Arduino's 5V pin!
-    
-    With brightness level 3, there are only 3 shades available (+ black)
-    0-63: black
-    64-127: darkest
-    128-191: medium
-    192-255: brightest
-*/
-
-
-uint8_t brightness = 3;
-
-ColorRGB colorRed = { 128, 0, 0 };
-ColorRGB colorGreen = { 64, 64, 0 };
-ColorRGB colorYellow = { 192, 128, 0 };
-ColorRGB colorBlue = { 64, 64, 128 };
-ColorRGB colorBlack = { 0, 0, 0 };
-
-ColorRGB getRgbValues(uint8_t color) {
-    switch (color) {
-        case 1: return colorRed;
-        case 2: return colorGreen;
-        case 3: return colorYellow;
-        default: return colorBlack;
-    }
-}
-
-void mirrorFrame(uint8_t frame[16][16]) {
-    uint8_t mirroredFrame[16][16];
-
-    for (uint8_t y = 0; y < 16; y++) {
-        for (uint8_t x = 0; x < 16; x++) {
-            mirroredFrame[y][x] = frame[y][15 - x];
-        }
-    }
-}
 
 void drawFrame(uint8_t frame[16][16], bool update, int displayTime = 100) {
     auto [r, g, b] = colorBlue;
@@ -88,31 +44,73 @@ void drawMirroredFrame(uint8_t frame[16][16], bool update, int displayTime = 100
     if (delay > 0) delay(displayTime);
 }
 
+void setFrame(uint8_t matrix[PIXELS_X][PIXELS_Y][COLORS], uint8_t frame[16][16], bool mirrored = false, uint16_t rotation = 0, bool refresh = false) {
+    for (uint8_t y = 0; y < 16; y++) {
+        for (uint8_t x = 0; x < 16; x++) {
+            uint8_t item = frame[y][x];
+            
+            if (item > 0) {
+                auto [r, g, b] = getRgbValues(item);
+                if (mirrored) {
+                    if (rotation == 90) setPixel(matrix, 15 - y, 15 - x, r, g, b, false);
+                    else if (rotation == 180) setPixel(matrix, x, 15 - y, r, g, b, false);
+                    else if (rotation == 270) setPixel(matrix, y, x, r, g, b, false);
+                    else setPixel(matrix, 15 - x, y, r, g, b, false);
+                }
+                else {
+                    if (rotation == 90) setPixel(matrix, 15 - y, x, r, g, b, false);
+                    else if (rotation == 180) setPixel(matrix, 15 - x, 15 - y, r, g, b, false);
+                    else if (rotation == 270) setPixel(matrix, y, 15 - x, r, g, b, false);
+                    else setPixel(matrix, x, y, r, g, b, false);
+                }
+            }
+        }
+    }
+
+    if (refresh) updateDisplay(matrix);
+}
+
 void setup() {
     FastLED.addLeds<NEOPIXEL, DATA_PIN>(leds, NUM_LEDS);
-    FastLED.setBrightness(brightness);
+    FastLED.setBrightness(3); // NOTE! Keep brightness under 10 so that the LEDs don't draw too much current
     Serial.begin(9600);
-    setPixels(matrix, 0, 0, 0, true);
+    clearPixels(matrix, true);
 }
 
 void loop() {
-    for (uint8_t i = 0; i < 10; i++) {
-        drawFrame(frameRun1, true);
-        drawFrame(frameRun2, true);
-        drawFrame(frameRun3, true);
-        drawFrame(frameRun2, true);
-    }
+    // clearPixels(matrix);
+    // setFrame(matrix, frameStand, false, 0, true);
+    // delay(1000);
 
-    drawMirroredFrame(frameTurn, true, 500);
-    drawMirroredFrame(frameStand, true, 3000);
+    // clearPixels(matrix);
+    // setFrame(matrix, frameStand, true, 0, true);
+    // delay(1000);
+
+    clearPixels(matrix);
+    setFrame(matrix, frameStand, false, 0, true);
+    delay(1000);
+
+    clearPixels(matrix);
+    setFrame(matrix, frameStand, true, 270, true);
+    delay(1000);
+
+    // for (uint8_t i = 0; i < 10; i++) {
+    //     drawFrame(frameRun1, true);
+    //     drawFrame(frameRun2, true);
+    //     drawFrame(frameRun3, true);
+    //     drawFrame(frameRun2, true);
+    // }
+
+    // drawMirroredFrame(frameTurn, true, 500);
+    // drawMirroredFrame(frameStand, true, 3000);
     
-    for (uint8_t i = 0; i < 10; i++) {
-        drawMirroredFrame(frameRun1, true);
-        drawMirroredFrame(frameRun2, true);
-        drawMirroredFrame(frameRun3, true);
-        drawMirroredFrame(frameRun2, true);
-    }
+    // for (uint8_t i = 0; i < 10; i++) {
+    //     drawMirroredFrame(frameRun1, true);
+    //     drawMirroredFrame(frameRun2, true);
+    //     drawMirroredFrame(frameRun3, true);
+    //     drawMirroredFrame(frameRun2, true);
+    // }
 
-    drawFrame(frameTurn, true, 500);
-    drawFrame(frameStand, true, 3000);
+    // drawFrame(frameTurn, true, 500);
+    // drawFrame(frameStand, true, 3000);
 }
