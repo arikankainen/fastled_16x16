@@ -1,8 +1,8 @@
 #include "def.h"
 #include "pixels.h"
 
-void setPixel(uint8_t matrix[PIXELS_X][PIXELS_Y][COLORS], uint8_t x, uint8_t y, uint8_t r, uint8_t g, uint8_t b, bool refresh) {
-    if (x < PIXELS_X && y < PIXELS_Y) {
+void setPixel(uint8_t matrix[PIXELS_X][PIXELS_Y][COLORS], int8_t x, int8_t y, uint8_t r, uint8_t g, uint8_t b, bool refresh) {
+    if (x >= 0 && y >= 0 && x < PIXELS_X && y < PIXELS_Y) {
         matrix[x][y][R] = r;
         matrix[x][y][G] = g;
         matrix[x][y][B] = b;

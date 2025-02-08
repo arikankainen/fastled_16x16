@@ -12,6 +12,7 @@ extern ColorRGB colorGreen;
 extern ColorRGB colorYellow;
 extern ColorRGB colorBlue;
 extern ColorRGB colorBlack;
+extern ColorRGB colorWhite;
 
 ColorRGB getRgbValues(uint8_t color);
 

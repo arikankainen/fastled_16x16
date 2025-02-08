@@ -13,12 +13,15 @@ ColorRGB colorGreen = { 64, 64, 0 };
 ColorRGB colorYellow = { 192, 128, 0 };
 ColorRGB colorBlue = { 64, 64, 128 };
 ColorRGB colorBlack = { 0, 0, 0 };
+ColorRGB colorWhite = { 192, 192, 192 };
 
 ColorRGB getRgbValues(uint8_t color) {
     switch (color) {
         case 1: return colorRed;
         case 2: return colorGreen;
         case 3: return colorYellow;
+        case 4: return colorBlack;
+        case 5: return colorWhite;
         default: return colorBlack;
     }
 }
