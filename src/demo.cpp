@@ -124,7 +124,7 @@ void animRunLeftInPlaceAndTurnRight() {
     delay(3000);
 }
 
-void animRunRightAndJump() {
+void animRunRightAndJumpOverKoopa() {
     uint8_t n = 0;
     uint8_t h = 0;
 
@@ -156,6 +156,7 @@ void animRunRightAndJump() {
         else {
             int8_t y = -JUMP_HEIGHT * sin((M_PI / JUMP_FRAMES) * h);
             setFrame(matrix, frameJump, false, 0, i, y - 1);
+            setFrame(matrix, frameKoopa, false, 0, 15 - i * 2, 1);
             h++;
         }
 
