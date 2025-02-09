@@ -10,14 +10,23 @@ void setup() {
 }
 
 void loop() {
-    // animRunRightWithFireball();
-    // delay(1000);
-
-    // animRunLeftWithFireball();
-    // delay(1000);
-
-    // animRunRightInPlaceAndTurnLeft();
-    // animRunLeftInPlaceAndTurnRight();
+    animRunRightIn();
+    animRunRightInPlace();
+    animTurnLeft();
+    delay(1000);
+    animRunLeftInPlace();
+    animRunLeftOut();
+    delay(1000);
 
     animRunRightAndJumpOverKoopa();
+    delay(1000);
+
+    animRunLeftWithFireball();
+    delay(1000);
+
+    animRunRightWithFireball();
+    delay(1000);
+
+    animRunLeftAndJumpOverKoopa();
+    delay(1000);
 }
