@@ -16,17 +16,15 @@ void loop() {
     delay(1000);
     animRunLeftInPlace();
     animRunLeftOut();
-    delay(1000);
 
     animRunRightAndJumpOverKoopa();
-    delay(1000);
+    delay(500);
 
     animRunLeftWithFireball();
-    delay(1000);
 
     animRunRightWithFireball();
-    delay(1000);
+    delay(500);
 
     animRunLeftAndJumpOverKoopa();
-    delay(1000);
+    delay(500);
 }
